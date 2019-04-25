@@ -31,7 +31,7 @@ nginx_version=$(./bin/nginx-$STACK -V 2>&1 | head -1 | awk '{ print $NF }')
 
 # if there isn't a matching nginx version for the stack, then we need to build one from source
 if [[ ! -f "bin/nginx-$STACK" ]]; then
-  source scripts/build_nginx.sh
+  source bin/compile_from_source.sh
   cp /tmp/nginx/sbin/nginx "$1/bin/nginx"
   echo "-----> nginx-buildpack: Compiled Nginx binary for ${STACK}" >> "$compile_log"
 else
