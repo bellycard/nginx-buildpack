@@ -49,9 +49,3 @@ echo "Downloading $open_ssl_url"
     --with-http_ssl_module --with-openssl=${temp_dir}/nginx-${NGINX_VERSION}/openssl-${OPEN_SSL_VERSION}
 	make install
 )
-
-while true
-do
-	sleep 1
-	echo "."
-done
