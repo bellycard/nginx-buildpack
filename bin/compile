@@ -2,27 +2,29 @@
 
 set -e
 
+compile_log="$1/nginx_buildpack_compile_log.txt"
+
 mkdir -p "$1/bin/"
 mkdir -p "$1/scripts/"
 
-echo "-----> nginx-buildpack: Installed ${nginx_version} to app/bin"
+echo "-----> nginx-buildpack: Installed ${nginx_version} to app/bin" >> "$compile_log"
 cp bin/start-nginx "$1/bin/"
-echo '-----> nginx-buildpack: Added start-nginx to app/bin'
+echo '-----> nginx-buildpack: Added start-nginx to app/bin' >> "$compile_log"
 cp bin/start-nginx-solo "$1/bin/"
-echo '-----> nginx-buildpack: Added start-nginx-solo to app/bin'
+echo '-----> nginx-buildpack: Added start-nginx-solo to app/bin' >> "$compile_log"
 cp scripts/build_nginx.sh "$1/scripts/"
-echo '-----> nginx-buildpack: Added build_nginx.sh to app/scripts'
+echo '-----> nginx-buildpack: Added build_nginx.sh to app/scripts' >> "$compile_log"
 
 mkdir -p "$1/config"
 
 cp config/mime.types "$1/config/"
-echo '-----> nginx-buildpack: Default mime.types copied to app/config/'
+echo '-----> nginx-buildpack: Default mime.types copied to app/config/' >> "$compile_log"
 
 if [[ ! -f $1/config/nginx.conf.erb ]]; then
 	cp config/nginx.conf.erb "$1/config/"
-	echo '-----> nginx-buildpack: Default config copied to app/config.'
+	echo '-----> nginx-buildpack: Default config copied to app/config.' >> "$compile_log"
 else
-	echo '-----> nginx-buildpack: Custom config found in app/config.'
+	echo '-----> nginx-buildpack: Custom config found in app/config.' >> "$compile_log"
 fi
 
 nginx_version=$(./bin/nginx-$STACK -V 2>&1 | head -1 | awk '{ print $NF }')
@@ -31,11 +33,11 @@ nginx_version=$(./bin/nginx-$STACK -V 2>&1 | head -1 | awk '{ print $NF }')
 if [[ ! -f "bin/nginx-$STACK" ]]; then
   source scripts/build_nginx.sh
   cp /tmp/nginx/sbin/nginx "$1/bin/nginx"
-  echo "-----> nginx-buildpack: Compiled Nginx binary for ${STACK}"
+  echo "-----> nginx-buildpack: Compiled Nginx binary for ${STACK}" >> "$compile_log"
 else
- echo "-----> nginx-buildpack: Found Nginx binary for ${STACK}"
+ echo "-----> nginx-buildpack: Found Nginx binary for ${STACK}" >> "$compile_log"
  cp "bin/nginx-$STACK" "$1/bin/nginx"
 fi
-echo "-----> nginx-buildpack: Installed ${nginx_version} to app/bin"
+echo "-----> nginx-buildpack: Installed ${nginx_version} to app/bin" >> "$compile_log"
 
 exit 0
