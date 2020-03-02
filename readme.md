@@ -84,6 +84,27 @@ In order to recompile nginx, you need to build it on the target system that it w
 
 10. Once you have the file, copy it to the `bin` directory in the `nginx-buildpack` repo under the appropriate stack name `nginx-cedar-14`. You can delete the temporary app created on Heroku.
 
+### Update - March 2020
+
+To recompile Nginx for a new Heroku stack version, make a new branch from this [compile brach](https://github.com/bellycard/nginx-buildpack/tree/compile), for example [compile-heroku-18](https://github.com/bellycard/nginx-buildpack/tree/compile-heroku-18).
+
+Then update the Nginx version (and OpenSSL version if needed) in this file `bin/compile_from_source.sh` (see this [commit](https://github.com/bellycard/nginx-buildpack/commit/c4e3e73f1409117baf1d500703df505c5ff6a9f7))
+
+```
+NGINX_VERSION=${NGINX_VERSION-1.16.1}
+PCRE_VERSION=${PCRE_VERSION-8.38}
+HEADERS_MORE_VERSION=${HEADERS_MORE_VERSION-0.23}
+OPEN_SSL_VERSION=${OPEN_SSL_VERSION-1.1.1}
+```
+
+Then use this new branch as buildpack on Heroku instead of the master branch on _step 3_ (see the steps above).
+
+```
+https://github.com/bellycard/nginx-buildpack#compile-heroku-18
+```
+
+**Note**: The compiled binary will be in the root path of the application (_step 9_, see the steps above).
+
 
 ### -- original readme below --
 
